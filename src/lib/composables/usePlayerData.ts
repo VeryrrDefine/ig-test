@@ -6,13 +6,13 @@ export const usePlayerData = <T>(selector: (player: Player) => T) => {
 
 	const updateRefValue = () => {
 		value.value = selector(player);
-		animationFrameRequest = requestAnimationFrame(updateRefValue);
+		intervalRequest = setTimeout(updateRefValue, 10);
 	};
 
-	let animationFrameRequest = requestAnimationFrame(updateRefValue);
+	let intervalRequest = setTimeout(updateRefValue, 10);
 
 	onUnmounted(() => {
-		cancelAnimationFrame(animationFrameRequest);
+		clearTimeout(intervalRequest);
 	});
 
 	return value;

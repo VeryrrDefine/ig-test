@@ -4,14 +4,15 @@ export const useUpdate = <T>(selector: () => T) => {
 	const value = shallowRef(selector());
 
 	const updateRefValue = () => {
+		// debugger;
 		value.value = selector();
-		animationFrameRequest = requestAnimationFrame(updateRefValue);
+		intervalRequest = setTimeout(updateRefValue, 10);
 	};
 
-	let animationFrameRequest = requestAnimationFrame(updateRefValue);
+	let intervalRequest = setTimeout(updateRefValue, 10);
 
 	onUnmounted(() => {
-		cancelAnimationFrame(animationFrameRequest);
+		clearTimeout(intervalRequest);
 	});
 
 	return value;

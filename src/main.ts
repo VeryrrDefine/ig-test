@@ -16,10 +16,6 @@ import ModalService from './lib/modal/modal';
 import { SaveDecoder, SaveEncoder, encodeObject, decodeObject } from './lib/binary-save';
 import Decimal from 'break_eternity.js';
 
-const app = createApp(App);
-app.directive('hold', vHold);
-app.mount('#app');
-
 declare global {
 	interface Window {
 		player?: Player;
@@ -46,3 +42,7 @@ window.SaveEncoder = SaveEncoder;
 window.encodeObject = encodeObject;
 window.decodeObject = decodeObject;
 window.Decimal = Decimal;
+
+const app = createApp(App);
+app.directive('hold', vHold);
+app.mount('#app');

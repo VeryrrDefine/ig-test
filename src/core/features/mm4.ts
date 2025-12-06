@@ -24,3 +24,16 @@ EffectManager.register({
 		return true;
 	},
 });
+
+EffectManager.register({
+	target: EFFECT_TARGETS.MM4_GAIN,
+	get effect() {
+		let b = player.upgrades.B11;
+		b = b.mul(player.upgrades.B12.add(1));
+		return b;
+	},
+	operator: 'add',
+	active() {
+		return player.upgrades.B11.gte(1);
+	},
+});

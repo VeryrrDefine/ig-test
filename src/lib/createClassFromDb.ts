@@ -41,7 +41,7 @@ export const createClassesFromDb = <
 			}
 		},
 	};
-
+	console.log(result);
 	return result;
 };
 
