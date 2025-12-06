@@ -12,6 +12,10 @@ import { initMM4Mechanics } from './core/features/mm4';
 
 import './core/secret-formula/upgrades';
 import ModalService from './lib/modal/modal';
+
+import { SaveDecoder, SaveEncoder, encodeObject, decodeObject } from './lib/binary-save';
+import Decimal from 'break_eternity.js';
+
 const app = createApp(App);
 app.directive('hold', vHold);
 app.mount('#app');
@@ -21,6 +25,11 @@ declare global {
 		player?: Player;
 		PowiainaNum?: typeof PowiainaNum;
 		ModalService?: typeof ModalService;
+		SaveDecoder?: typeof SaveDecoder;
+		SaveEncoder?: typeof SaveEncoder;
+		encodeObject?: typeof encodeObject;
+		decodeObject?: typeof decodeObject;
+		Decimal?: typeof Decimal;
 	}
 }
 initMM4Mechanics();
@@ -32,3 +41,8 @@ setInterval(saveGame, 1000);
 window.PowiainaNum = PowiainaNum;
 window.ModalService = ModalService;
 window.player = player;
+window.SaveDecoder = SaveDecoder;
+window.SaveEncoder = SaveEncoder;
+window.encodeObject = encodeObject;
+window.decodeObject = decodeObject;
+window.Decimal = Decimal;
