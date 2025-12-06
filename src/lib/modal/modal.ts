@@ -60,114 +60,127 @@ export interface ProgressController {
 	getInstance: () => ModalInstance | null;
 	updateComponentProps: (props: Record<string, any>) => void;
 }
+function show(options2: ModalOptions): { controller: ProgressController } {
+	const container = document.createElement('div');
+	document.body.appendChild(container);
 
-const ModalService = {
-	show(options2: ModalOptions): { controller: ProgressController } {
-		const container = document.createElement('div');
-		document.body.appendChild(container);
+	const options = options2;
+	const visible = ref(true);
+	const progress = ref(options.progress || 0);
+	const customButtons = ref(options.buttons || []);
+	const currentContent = ref(options.content || '');
+	const componentProps = ref(options.componentProps || {});
+	let modalInstance: ModalInstance | null = null;
 
-		const options = options2;
-		const visible = ref(true);
-		const progress = ref(options.progress || 0);
-		const customButtons = ref(options.buttons || []);
-		const currentContent = ref(options.content || '');
-		const componentProps = ref(options.componentProps || {});
-		let modalInstance: ModalInstance | null = null;
+	const controller: ProgressController = {
+		updateProgress: (value: number) => {
+			progress.value = Math.min(100, Math.max(0, value));
+		},
+		updateButtons: (buttons: ButtonConfig[]) => {
+			customButtons.value = buttons.map((btn) => ({
+				...btn,
+				handler: () => btn.handler(undefined, modalInstance!),
+			}));
+		},
+		updateContent: (content: string) => {
+			currentContent.value = content;
+		},
+		updateComponentProps: (props: Record<string, any>) => {
+			componentProps.value = { ...componentProps.value, ...props };
+		},
+		close: () => {
+			visible.value = false;
+			setTimeout(() => {
+				app.unmount();
+				container.remove();
+			}, 300);
+		},
+		getInstance: () => modalInstance,
+	};
 
-		const controller: ProgressController = {
-			updateProgress: (value: number) => {
-				progress.value = Math.min(100, Math.max(0, value));
-			},
-			updateButtons: (buttons: ButtonConfig[]) => {
-				customButtons.value = buttons.map((btn) => ({
-					...btn,
-					handler: () => btn.handler(undefined, modalInstance!),
-				}));
-			},
-			updateContent: (content: string) => {
-				currentContent.value = content;
-			},
-			updateComponentProps: (props: Record<string, any>) => {
-				componentProps.value = { ...componentProps.value, ...props };
-			},
-			close: () => {
-				visible.value = false;
-				setTimeout(() => {
-					app.unmount();
-					container.remove();
-				}, 300);
-			},
-			getInstance: () => modalInstance,
-		};
+	const app: App = createApp({
+		setup(_, { expose }) {
+			const methodsRef = ref<ModalInstance>();
 
-		const app: App = createApp({
-			setup(_, { expose }) {
-				const methodsRef = ref<ModalInstance>();
+			// 创建代理方法
+			const exposedMethods = {
+				handleConfirm: () => methodsRef.value?.handleConfirm?.(),
+				handleCancel: () => methodsRef.value?.handleCancel?.(),
+				close: () => methodsRef.value?.close?.(),
+				updateComponentProps: (props: Record<string, any>) => {
+					componentProps.value = { ...componentProps.value, ...props };
+				},
+			};
 
-				// 创建代理方法
-				const exposedMethods = {
-					handleConfirm: () => methodsRef.value?.handleConfirm?.(),
-					handleCancel: () => methodsRef.value?.handleCancel?.(),
-					close: () => methodsRef.value?.close?.(),
-					updateComponentProps: (props: Record<string, any>) => {
-						componentProps.value = { ...componentProps.value, ...props };
+			expose({ getMethods: () => exposedMethods });
+
+			return () =>
+				h(Modal, {
+					// eslint-disable-next-line @typescript-eslint/no-explicit-any
+					ref: (el: any) => {
+						if (el) {
+							methodsRef.value = {
+								handleConfirm: el.handleConfirm,
+								handleCancel: el.handleCancel,
+								close: el.close,
+								updateComponentProps: exposedMethods.updateComponentProps,
+							};
+							modalInstance = methodsRef.value; // 更新实例引用
+						}
 					},
-				};
-
-				expose({ getMethods: () => exposedMethods });
-
-				return () =>
-					h(Modal, {
-						// eslint-disable-next-line @typescript-eslint/no-explicit-any
-						ref: (el: any) => {
-							if (el) {
-								methodsRef.value = {
-									handleConfirm: el.handleConfirm,
-									handleCancel: el.handleCancel,
-									close: el.close,
-									updateComponentProps: exposedMethods.updateComponentProps,
-								};
-								modalInstance = methodsRef.value; // 更新实例引用
-							}
-						},
-						visible: visible.value,
-						title: options.title,
-						content: currentContent.value,
-						icon: options.icon,
-						fields: options.fields,
-						modalWidth: options.width,
-						showCancelButton: options.showCancelButton,
-						showConfirmButton: options.showConfirmButton,
-						closeOnClickMask: options.closeOnClickMask,
-						onClose: options.onClose,
-						validateOnChange: options.validateOnChange,
-						showProgress: options.showProgress,
-						progress: progress.value,
-						customComponent: options.component,
-						componentProps: componentProps.value,
-						customSlots: options.slots,
-						customButtons: customButtons.value.map((btn) => ({
-							...btn,
-							handler: () => btn.handler(undefined, modalInstance!), // 直接使用实例引用
-						})),
-						'onUpdate:visible': (val: boolean) => {
-							if (!val) controller.close();
-						},
-						onConfirm: (values: string[]) => {
-							options.onConfirm?.(values);
-							controller.close();
-						},
-						onCancel: () => {
-							options.onCancel?.();
-							controller.close();
-						},
-					});
-			},
-		});
-		app.directive('hold', vHold);
-		app.mount(container);
-		return { controller };
+					visible: visible.value,
+					title: options.title,
+					content: currentContent.value,
+					icon: options.icon,
+					fields: options.fields,
+					modalWidth: options.width,
+					showCancelButton: options.showCancelButton,
+					showConfirmButton: options.showConfirmButton,
+					closeOnClickMask: options.closeOnClickMask,
+					onClose: options.onClose,
+					validateOnChange: options.validateOnChange,
+					showProgress: options.showProgress,
+					progress: progress.value,
+					customComponent: options.component,
+					componentProps: componentProps.value,
+					customSlots: options.slots,
+					customButtons: customButtons.value.map((btn) => ({
+						...btn,
+						handler: () => btn.handler(undefined, modalInstance!), // 直接使用实例引用
+					})),
+					'onUpdate:visible': (val: boolean) => {
+						if (!val) controller.close();
+					},
+					onConfirm: (values: string[]) => {
+						options.onConfirm?.(values);
+						controller.close();
+					},
+					onCancel: () => {
+						options.onCancel?.();
+						controller.close();
+					},
+				});
+		},
+	});
+	app.directive('hold', vHold);
+	app.mount(container);
+	return { controller };
+}
+const ModalService = {
+	show(a: ModalOptions | string): ReturnType<typeof show> {
+		let b = {};
+		if (typeof a == 'object') {
+			b = a;
+		} else {
+			b = {
+				content: a,
+			};
+		}
+		return show(b);
 	},
+} as {
+	show(a: string): ReturnType<typeof show>;
+	show(a: ModalOptions): ReturnType<typeof show>;
 };
 
 export default ModalService;

@@ -1,6 +1,7 @@
 import PowiainaNum, { type PowiainaNumSource } from 'powiaina_num.js';
 import { getInitialPlayer, player, type Player } from '../player/player';
 import { saveSerializer } from './serializer';
+import { SAVE_ID } from '../../game-config';
 
 type DeepPartial<T> = T extends (infer U)[]
 	? DeepPartial<U>[] | undefined
@@ -8,7 +9,6 @@ type DeepPartial<T> = T extends (infer U)[]
 		? { [P in keyof T]?: DeepPartial<T[P]> }
 		: T;
 
-const SAVE_ID = 'mdvi6';
 /**
  * 此函数是用来：
  * 合并两个对象

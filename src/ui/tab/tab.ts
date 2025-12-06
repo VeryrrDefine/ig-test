@@ -4,6 +4,7 @@ import { createClassesFromDb } from '../../lib/createClassFromDb';
 import Save from '../components/tabs/Save.vue';
 import About from '../components/tabs/About.vue';
 import Main from '../components/tabs/Main';
+import OfflineTime from '../components/tabs/OfflineTime.vue';
 
 interface ITabConfigBase {
 	id: string;
@@ -132,6 +133,12 @@ export const tabs = createClassesFromDb(
 						id: 'baixie2',
 						text: '成就',
 						tabid: 2,
+					},
+					{
+						id: 'baixie3',
+						text: '离线时间',
+						component: OfflineTime,
+						tabid: 5,
 					},
 				] as const satisfies ISubtabConfig[],
 				{},

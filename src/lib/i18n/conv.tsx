@@ -15,6 +15,12 @@ export function convertMessageToTSX(
 	let keyIndex = 0;
 
 	if (typeof message == 'function') {
+		let q: {
+			[key: string]: unknown;
+		} = {};
+		for (const key in content) {
+			q[key] = typeof content[key] == 'function' ? content[key]() : content[key];
+		}
 		return message(content);
 	}
 	for (let i = 0; i < message.length; i++) {
