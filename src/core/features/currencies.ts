@@ -10,20 +10,16 @@ export function getCurrency(x: Currencies) {
 	switch (x) {
 		case Currencies.MM4:
 			return player.volumes;
-
-		default:
-			const isnever: never = x;
-			return PowiainaNum.NaN;
 	}
+	let q: never = x;
+	return q;
 }
 
 export function setCurrency(x: Currencies, y: PowiainaNumSource) {
 	switch (x) {
 		case Currencies.MM4:
 			return (player.volumes = new PowiainaNum(y));
-
-		default:
-			const isnever: never = x;
-			return PowiainaNum.NaN;
 	}
+	let q: never = x;
+	return q;
 }

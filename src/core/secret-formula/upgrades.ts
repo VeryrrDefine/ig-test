@@ -1,6 +1,5 @@
 import PowiainaNum from 'powiaina_num.js';
 import { createClassesFromDb } from '../../lib/createClassFromDb';
-import { Upgrade } from '../features/upgrade';
 import { Currencies } from '../features/currencies';
 import { RebuyableUpgrade } from '../features/rebuyableUpgrade';
 import { player } from '../player/player';

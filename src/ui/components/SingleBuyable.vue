@@ -2,14 +2,12 @@
 import { useUpdate } from '../../lib/composables/useUpdate';
 import { format } from '../../lib/format';
 import type { Upgrade } from '../../core/features/upgrade';
-import { formatWhole } from '../../lib/format';
 
 const props = defineProps<{ upgrade: Upgrade<{}>; inline?: boolean }>();
 
 const canPurchase = useUpdate(() => props.upgrade.canPurchase());
 const hasUpgrade = useUpdate(() => props.upgrade.hasUpgrade);
 const visible = useUpdate(() => props.upgrade.isVisible);
-const key = useUpdate(() => Math.random());
 // const more = useUpdate(() => props.buyable.more)
 // const req = useUpdate(() => props.buyable.requirements)
 function useClass() {

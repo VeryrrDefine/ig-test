@@ -1,5 +1,5 @@
 import PowiainaNum from 'powiaina_num.js';
-import { Upgrade, UpgradeBase, type UpgradeConfig } from './upgrade';
+import { UpgradeBase, type UpgradeConfig } from './upgrade';
 import { player } from '../player/player';
 import { getCurrency, setCurrency } from './currencies';
 

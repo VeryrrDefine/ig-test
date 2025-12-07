@@ -1,4 +1,3 @@
-import { player } from '../../core/player/player';
 import type { PowiainaNumSource } from 'powiaina_num.js';
 import PowiainaNum from 'powiaina_num.js';
 import Notations from '@veryrrdefine/powiainanum-notations';

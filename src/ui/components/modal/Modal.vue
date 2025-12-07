@@ -67,7 +67,7 @@
 					</slot>
 				</div>
 				<div class="modal-footer">
-					<template v-for="(btn, index) in processedButtons" :key="'btn-' + index">
+					<template v-for="(btn, _i) in processedButtons" :key="'btn-' + _i">
 						<button
 							:class="btn.class"
 							@click="btn.handler"

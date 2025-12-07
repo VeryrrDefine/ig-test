@@ -1,6 +1,4 @@
-import { defineComponent, ref } from 'vue';
-import { convertMessageToTSX } from '../../../lib/i18n/conv';
-import { component as C } from '../../text-to-component-convert';
+import { defineComponent } from 'vue';
 import { useUpdate } from '../../../lib/composables/useUpdate';
 import { LEVELS } from '../../../core/features/resettiers/level';
 import { player } from '../../../core/player/player';

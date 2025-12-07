@@ -1,13 +1,10 @@
 import { defineComponent } from 'vue';
-import { convertMessageToTSX } from './lib/i18n/conv';
 import { usePlayerData } from './lib/composables/usePlayerData';
 import { format } from './lib/format';
 import TopContent from './ui/components/TopContent.vue';
 import { findTab } from './ui/tab/tab';
-import { player } from './core/player/player';
 import { EffectManager } from './lib/effect';
 import { EFFECT_TARGETS } from './lib/effect-target';
-import { VueLatex } from 'vatex';
 import I18nText from './lib/i18n/I18nText';
 import { actualSpeed } from './core/features/offline';
 import { useUpdate } from './lib/composables/useUpdate';

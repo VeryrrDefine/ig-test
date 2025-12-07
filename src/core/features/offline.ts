@@ -1,4 +1,3 @@
-import type PowiainaNum from 'powiaina_num.js';
 import { player } from '../player/player';
 
 export function actualSpeed() {

@@ -11,7 +11,7 @@ export class TagCoder {
 	saveencoder: SaveEncoder<any> | null = null;
 	savedecoder: SaveDecoder | null = null;
 	constructor() {}
-	static encodeJudgeObject<T extends object>(x: T) {
+	static encodeJudgeObject<T extends object>(_x: T) {
 		return false;
 	}
 	encode() {}

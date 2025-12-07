@@ -10,7 +10,6 @@ const canPurchase = useUpdate(() => props.buyable.canPurchase());
 const hasUpgrade = useUpdate(() => props.buyable.hasUpgrade);
 const amount = useUpdate(() => props.buyable.purchased);
 const visible = useUpdate(() => props.buyable.isVisible);
-const key = useUpdate(() => Math.random());
 // const more = useUpdate(() => props.buyable.more)
 // const req = useUpdate(() => props.buyable.requirements)
 function useClass() {
